@@ -88,3 +88,28 @@ def pearson_r(x_values, y_values):
     for i, item in enumerate(x_values):
         total_sum += z_score(x_values, item) * z_score(y_values, y_values[i])
     return total_sum/(len(x_values) - 1)
+
+
+def slope(x_values, y_values):
+    pearson = pearson_r(x_values, y_values)
+    # Standard deviation for X values
+    Sx = standard_deviation(x_values)
+
+    Sy = standard_deviation(y_values)
+    return pearson * (Sy/Sx)
+
+
+def constant(x_values, y_values):
+    b = slope(x_values, y_values)
+    return mean(y_values) - b * mean(x_values)
+
+
+def linear_regression(x_values, y_values, value_x_predict):
+    a = constant(x_values, y_values)
+    b = slope(x_values, y_values)
+    predicted_y = a + b * value_x_predict
+    return predicted_y
+
+
+def r_squared(x_values, y_values):
+    return pearson(x_values, y_values) ** 2
