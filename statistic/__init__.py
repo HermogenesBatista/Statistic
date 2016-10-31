@@ -37,14 +37,14 @@ def median(list_of_values):
     return copy_list[half_list]
 
 
-def calculate_quartile(list_of_values, end=False):
+def calculate_quartile(list_of_values, third_quartile=False):
     """Generic formula to get a quartile, first or third quartile """
     copy_list = copy.deepcopy(list_of_values)
     copy_list.sort()
     many_items = len(copy_list)
     half_list = int(many_items/2)
     print half_list
-    if end:
+    if third_quartile:
         half_list_of_values = copy_list[half_list:]
     else:
         half_list_of_values = copy_list[:half_list]
@@ -63,14 +63,28 @@ def interquartile(list_of_values):
         copy_list.insert(half_list, median(copy_list))
 
     first_quartile = calculate_quartile(copy_list)
-    third_quartile = calculate_quartile(copy_list, end=True)
+    third_quartile = calculate_quartile(copy_list, third_quartile=True)
     return third_quartile - first_quartile
 
 
 def standard_deviation(list_of_values):
     return math.sqrt(variance(list_of_values))
 
+
 def variance(list_of_values):
     mean_ = mean(list_of_values)
     sum_of_squares = sum([(item - mean_)**2 for item in list_of_values])
     return sum_of_squares/(len(list_of_values) - 1)
+
+
+def z_score(list_of_values, value_to_score):
+    mean_value = mean(list_of_values)
+    S_deviation = standard_deviation(list_of_values)
+    return (value_to_score - mean_value)/S_deviation
+
+
+def pearson_r(x_values, y_values):
+    total_sum = 0
+    for i, item in enumerate(x_values):
+        total_sum += z_score(x_values, item) * z_score(y_values, y_values[i])
+    return total_sum/(len(x_values) - 1)
